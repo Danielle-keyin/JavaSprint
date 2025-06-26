@@ -23,27 +23,27 @@ public class Main {
             System.out.print("Enter your choice: ");
             String choice = scanner.nextLine();
 
-            // Handle the choice. Switch-case galore.
+            // Handle the choice
             switch (choice) {
-                case "1" -> system.addPatient(scanner);              // Add a patient. Basic.
-                case "2" -> system.deletePatient(scanner);           // Delete them. Gone.
-                case "3" -> system.editPatient(scanner);             // Fix the typo you made.
-                case "4" -> system.searchPatient(scanner);           // Hope you spelled it right.
-                case "5" -> system.addDoctor(scanner);               // Doctors join the chaos.
-                case "6" -> system.deleteDoctor(scanner);            // They're out.
-                case "7" -> system.editDoctor(scanner);              // Change their name. Again.
-                case "8" -> system.searchDoctor(scanner);            // Another guessing game.
-                case "9" -> system.addMedication(scanner);           // Add drugs. Legally.
-                case "10" -> system.deleteMedication(scanner);       // Oops, didn’t need that one.
-                case "11" -> system.editMedication(scanner);         // Dosage was wrong? Shocking.
-                case "12" -> system.searchMedication(scanner);       // “Tylenol” or “Tylonel”? Good luck.
-                case "13" -> system.assignPatientToDoctor(scanner);  // Force a relationship. Why not.
-                case "14" -> system.acceptPrescription(scanner);     // Enter everything manually. Fun.
-                case "15" -> system.generateFullReport();            // Dump all the data. Wall of text incoming.
-                case "16" -> system.checkExpiredMedications();       // Wow, stuff expired. Surprise.
+                case "1" -> system.addPatient(scanner);              // Add a patient. Basic
+                case "2" -> system.deletePatient(scanner);           // Delete them. Gone
+                case "3" -> system.editPatient(scanner);             // Fix the typo you made
+                case "4" -> system.searchPatient(scanner);           // Hope you spelled it right
+                case "5" -> system.addDoctor(scanner);               // Doctors join the chaos
+                case "6" -> system.deleteDoctor(scanner);            // They're out
+                case "7" -> system.editDoctor(scanner);              // Change their name. Again
+                case "8" -> system.searchDoctor(scanner);            // Another guessing game
+                case "9" -> system.addMedication(scanner);           // Add drugs. Legally
+                case "10" -> system.deleteMedication(scanner);       // Oops, didn’t need that one
+                case "11" -> system.editMedication(scanner);         // Dosage was wrong? Shocking
+                case "12" -> system.searchMedication(scanner);       // “Tylenol” or “Tylonel”? Good luck
+                case "13" -> system.assignPatientToDoctor(scanner);  // Force a relationship. Why not
+                case "14" -> system.acceptPrescription(scanner);     // Enter everything manually. Fun
+                case "15" -> system.generateFullReport();            // Dump all the data. Wall of text incoming
+                case "16" -> system.checkExpiredMedications();       // Wow, stuff expired. Surprise
                 case "17" -> system.printPrescriptionsByDoctor(scanner); // The doctor writes *how* many?
-                case "18" -> system.printPatientDrugSummary(scanner);    // Here's what the patient hoarded all year.
-                case "19" -> system.restockDrugs();                      // Random refill. Totally realistic.
+                case "18" -> system.printPatientDrugSummary(scanner);    // Here's what the patient hoarded all year
+                case "19" -> system.restockDrugs();                      // Random refill. Totally realistic..
                 case "0" -> {
                     // Finally, sweet escape.
                     System.out.println("Exiting the system. Goodbye!");
@@ -58,7 +58,7 @@ public class Main {
     }
 
     private static void printMenu() {
-        // The menu. All 19 glorious options. Because 5 wasn’t enough.
+        // The menu. All 19 glorious options. Because 5 wasn’t enough
         System.out.println("\n=== PHARMACY MANAGEMENT MENU ===");
         System.out.println("1. Add Patient");
         System.out.println("2. Delete Patient");
