@@ -1,4 +1,4 @@
-package model;
+package keyin.team6.model;
 
 public class Prescription {
     // Placeholder

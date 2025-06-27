@@ -1,9 +1,9 @@
-package system;
+package keyin.team6.system;
 
-import model.Doctor;
-import model.Patient;
-import model.Medication;
-import model.Prescription;
+import keyin.team6.keyin.team6.model.Doctor;
+import keyin.team6.model.Patient;
+import keyin.team6.model.Medication;
+import keyin.team6.model.Prescription;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
