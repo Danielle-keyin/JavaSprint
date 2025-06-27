@@ -1,8 +1,8 @@
 // I (Danielle) have worked in a pharmacy for the past 16 years so pardon the frustration in the pt / doc interactions in the menulol
-package ui;
+package keyin.team6.ui;
 
 // We import the system. Because everything depends on this one class. Of course it does.
-import system.MedicationTrackingSystem;
+import keyin.team6.system.MedicationTrackingSystem;
 
 import java.util.Scanner;
 
