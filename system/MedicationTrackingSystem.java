@@ -1,26 +1,48 @@
 // Adds a new patient. Yes, manually. No, there's no form. Welcome to 2003 bahahaha
-public void addPatient(Scanner scanner) { ... }
+public void addPatient(Scanner scanner) {
+    System.out.println("Add Patient: Not implemented yet");
+}
 
 // Deletes a patient from the system
-public void deletePatient(Scanner scanner) { ... }
+public void deletePatient(Scanner scanner) {
+    System.out.println("Delete Patient: Patient mysteriously vanished. Probably moved pharmacies");
+}
 
-// Because someone *definitely* entered "Jhn Smth" by accident. Time to fix it
-public void editPatient(Scanner scanner) { ... }
+// Because someone *definitely* entered \"Jhn Smth\" by accident. Time to fix it
+public void editPatient(Scanner scanner) {
+    System.out.println("Edit Patient: Fixing typos one at a time, because why use validation? haha");
+}
 
 // Search for a patient. If you get the name even slightly wrong, oh well
-public void searchPatient(Scanner scanner) { ... }
+public void searchPatient(Scanner scanner) {
+    System.out.println("Search Patient: Good luck spelling it right on the first try");
+}
 
 // Adds a new doctor
-public void addDoctor(Scanner scanner) { ... }
+public void addDoctor(Scanner scanner) {
+    System.out.println("Add Doctor: Added a new doc");
+}
 
 // Removes a doctor
-public void deleteDoctor(Scanner scanner) { ... }
+public void deleteDoctor(Scanner scanner) {
+    System.out.println("Delete Doctor: Doctor has left the chat (and the practice or the province)");
+}
 
 // Assigns a patient to a doctor
-public void assignPatientToDoctor(Scanner scanner) { ... }
+public void assignPatientToDoctor(Scanner scanner) {
+    System.out.println("Assign Patient to Doctor");
+}
 
 // Manually input a prescription. Yes, everything. No shortcuts. Hope you like typing! xD
-public void acceptPrescription(Scanner scanner) { ... }
+public void acceptPrescription(Scanner scanner) {
+    System.out.println("Accept Prescription");
+}
+
+// Restocks every med with a random quantity. Totally how pharmacies work in real life.... yup totally
+public void restockDrugs() {
+    System.out.println("Restock Drugs");
+}
+
 
 // Prints every doctor, patient, med, and prescription. yeah it's a wall of text...
 public void generateFullReport() {
@@ -89,6 +111,3 @@ public void printPatientDrugSummary(Scanner scanner) {
         }
     }
 }
-
-// Restocks every med with a random quantity. Totally how pharmacies work in real life.... yup totally
-public void restockDrugs() { ... }
