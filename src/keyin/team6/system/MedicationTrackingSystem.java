@@ -1,9 +1,11 @@
 package keyin.team6.system;
 
-import keyin.team6.keyin.team6.model.Doctor;
+import keyin.team6.keyin.team6.model.Doctor;  //Here is Artem u've got path keyin.team6.keyin.team6 (twice) so I changed it
 import keyin.team6.model.Patient;
 import keyin.team6.model.Medication;
 import keyin.team6.model.Prescription;
+import keyin.team6.model.Doctor;           //Artem* actually I just added it here because when I removing the first import 
+                                        // java.util.Random import not exists 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
