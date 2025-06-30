@@ -750,7 +750,13 @@ public class MedicationTrackingSystem {
 
 	// Restocks every med with a random quantity. Totally how pharmacies work in real life.... yup totally
 	public void restockDrugs() {
-		
+		System.out.println("\n--- RESTOCKING MEDICATIONS ---");
+		for (Medication m : this.medications.values()) {
+			int restockAmount = (int) (Math.random() * 50) + 1; // Random restock amount between 1 and 50
+			m.restock(restockAmount);
+			System.out.println("Restocked " + m.getName() + " by " + restockAmount + ". New stock: " + m.getQuantityInStock());
+		}
+		System.out.println("All medications have been restocked.");
 	}
 
 	// Prints every doctor, patient, med, and prescription. yeah it's a wall of text...
