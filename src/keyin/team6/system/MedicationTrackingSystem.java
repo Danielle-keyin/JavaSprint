@@ -15,8 +15,8 @@ import keyin.team6.utils.Utilities;
 
 public class MedicationTrackingSystem {
 
-	private PersonStore<Patient> patientStore;
-	private DoctorStore doctorStore;
+	public PersonStore<Patient> patientStore;
+	public DoctorStore doctorStore;
 	private Map<String, Medication> medications;
 	private List<Prescription> prescriptions;
 
@@ -758,76 +758,13 @@ public class MedicationTrackingSystem {
 		}
 		System.out.println("All medications have been restocked.");
 	}
-
-	// Prints every doctor, patient, med, and prescription. yeah it's a wall of text...
-	public void generateFullReport() {
-		System.out.println("\n--- SYSTEM REPORT ---");
-
-		System.out.println("Doctors:");
-		for (Doctor doc : this.doctorStore.getAllPersons().values()) {
-			System.out.println(doc);
-		}
-
-		System.out.println("\nPatients:");
-		for (Patient p : this.patientStore.getAllPersons().values()) {
-			System.out.println(p);
-		}
-
-		System.out.println("\nMedications:");
-		for (Medication m : this.medications.values()) {
-			System.out.println(m);
-		}
-
-		System.out.println("\nPrescriptions:");
-		for (Prescription pr : this.prescriptions) {
-			System.out.println(pr);
-		}
-
+	
+	public Map<String, Medication> getMedications() {
+		return new HashMap<>(this.medications);
 	}
-
-	// Loops through meds. Prints the expired ones. You’ll act shocked even though no one updates the inventory
-	public void checkExpiredMedications() {
-		System.out.println("\n--- EXPIRED MEDICATIONS ---");
-		boolean found = false;
-		for (Medication m : this.medications.values()) {
-			if (m.getExpiryDate().isBefore(LocalDate.now())) {
-				System.out.println(m);
-				found = true;
-			}
-		}
-		if (!found)
-			System.out.println("No expired medications found. Miraculous.");
-	}
-
-	// Prints every prescription from a specific doctor. Spoiler: It’s a lot
-	public void printPrescriptionsByDoctor(Scanner scanner) {
-		System.out.print("Enter doctor name: ");
-		String name = scanner.nextLine();
-
-		System.out.println("\n--- Prescriptions by Dr. " + name + " ---");
-		for (Prescription p : this.prescriptions) {
-			if (p.getDoctor().getName().equalsIgnoreCase(name)) {
-				System.out.println(p);
-			}
-		}
-	}
-
-	// Lists all drugs prescribed to a patient in the past year
-	public void printPatientDrugSummary(Scanner scanner) {
-		System.out.print("Enter patient name: ");
-		String name = scanner.nextLine();
-
-		for (Patient p : this.patientStore.getAllPersons().values()) {
-			if (p.getName().equalsIgnoreCase(name)) {
-				System.out.println("\n--- Drug Summary for " + p.getName() + " ---");
-				for (Prescription pr : p.getPrescriptions()) {
-					if (pr.getIssueDate().isAfter(LocalDate.now().minusYears(1))) {
-						System.out.println("- " + pr.getMedication().getName());
-					}
-				}
-			}
-		}
-
+	
+	public List<Prescription> getPrescriptions() {
+		return new ArrayList<>(this.prescriptions);
 	}
 	
 	public void insertDoctor(Doctor doctor) {

@@ -18,6 +18,7 @@ public class Medication {
         this.expiryDate = expiryDate;
     }
 
+    @Deprecated
     private static LocalDate generateRandomExpiry() {       // this is optional just for testing , can be removed after 
         int randomDays = ThreadLocalRandom.current().nextInt(-365, 730); // -1 year to +2 years 
         return LocalDate.now().plusDays(randomDays);
