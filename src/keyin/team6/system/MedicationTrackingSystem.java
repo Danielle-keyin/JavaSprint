@@ -631,19 +631,129 @@ public class MedicationTrackingSystem {
 	}
 
 	public void searchMedication(Scanner scanner) {
-		System.out.println("Search Medication: Not implemented yet.");
+		System.out.println("SEARCH MEDICATION");
+		System.out.println("1. Search by ID");
+		System.out.println("2. Search by Name");
+		System.out.print("Choose search method (1-2): ");
+
+		while (true) {
+			String choice = scanner.nextLine();
+
+			if (Utilities.isQuitChoice(choice)) {
+				System.out.println("Exiting search mode.");
+				return;
+			}
+
+			switch (choice) {
+			case "1":
+				System.out.print("Enter Medication ID: ");
+				String id = scanner.nextLine();
+				if (!this.medications.containsKey(id)) {
+					System.out.println("Medication with ID " + id + " not found.");
+					return;
+				}
+
+				System.out.println(this.medications.get(id));
+				return;
+			case "2": {
+				System.out.print("Enter Medication Name: ");
+				String name = scanner.nextLine();
+
+				List<Medication> foundMeds = new ArrayList<>();
+				for (Medication m : this.medications.values()) {
+					if (m.getName().equalsIgnoreCase(name)) {
+						foundMeds.add(m);
+					}
+				}
+
+				if (foundMeds.isEmpty()) {
+					System.out.println("No medications found with name " + name);
+					return;
+				}
+
+				for (Medication m : foundMeds) {
+					System.out.println(m);
+				}
+
+				return;
+			}
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
 	}
 
 	// Manually input a prescription. Yes, everything. No shortcuts. Hope you like
 	// typing! xD
 	public void acceptPrescription(Scanner scanner) {
-		System.out.println("Accept Prescription");
+		Patient patient;
+	
+		while (true) {
+			System.out.print("Enter Patient ID: ");
+			String patientId = scanner.nextLine();
+
+			if (!this.patientStore.hasPerson(patientId)) {
+				System.out.println("Patient with ID " + patientId + " not found.");
+				continue; 
+			}
+
+			patient = this.patientStore.getPerson(patientId);
+			break;
+		}
+
+		Doctor doctor;
+		
+		while (true) {
+			System.out.print("Enter Doctor ID: ");
+			String doctorId = scanner.nextLine();
+
+			if (!this.doctorStore.hasPerson(doctorId)) {
+				System.out.println("Doctor with ID " + doctorId + " not found.");
+				continue; 
+			}
+
+			doctor = this.doctorStore.getPerson(doctorId);
+			break;
+		}
+
+		Medication medication;
+		
+		while (true) {
+			System.out.print("Enter Medication ID: ");
+			String medicationId = scanner.nextLine();
+
+			if (!this.medications.containsKey(medicationId)) {
+				System.out.println("Medication with ID " + medicationId + " not found.");
+				continue; 
+			}
+
+			medication = this.medications.get(medicationId);
+			if (medication.getQuantityInStock() <= 0) {
+				System.out.println("Medication is out of stock. Are you sure? (yes/no)");
+				String confirmation = scanner.nextLine();
+				if (!confirmation.equalsIgnoreCase("yes")) {
+					continue;
+				} 
+			}
+			break;
+		}
+
+		LocalDate issueDate = LocalDate.now();
+
+		Prescription newPrescription = new Prescription(patient, doctor, medication, issueDate);
+		
+		// TODO (for a real company) check if the patient already has a prescription for this medication
+		
+		this.prescriptions.add(newPrescription);
+		patient.addPrescription(newPrescription);
+		
+		System.out.println("Prescription added successfully: " + newPrescription);
 	}
 
 	// Restocks every med with a random quantity. Totally how pharmacies work in
 	// real life.... yup totally
 	public void restockDrugs() {
-		System.out.println("Restock Drugs");
+		
 	}
 
 	// Prints every doctor, patient, med, and prescription. yeah it's a wall of

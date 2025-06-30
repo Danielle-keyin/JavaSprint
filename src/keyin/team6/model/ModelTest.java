@@ -18,7 +18,7 @@ public class ModelTest {
         Medication med = new Medication(UUID.randomUUID().toString(), "Ibuprofen", "200mg", 100, LocalDate.of(2025, 12, 1));
 
         // Create a prescription with a prescribed doctor , medication and date of prescription 
-        Prescription prescription = new Prescription(doctor, med, LocalDate.now());
+        Prescription prescription = new Prescription(patient, doctor, med, LocalDate.now());
 
         // Add prescription to patient
         patient.addPrescription(prescription);
