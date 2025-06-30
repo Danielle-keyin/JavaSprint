@@ -20,38 +20,78 @@ public class Medication {
         this.expiryDate = generateRandomExpiry();
     }
 
-    private LocalDate generateRandomExpiry() {       // this is optional just for testing , can be removed after 
+    private static LocalDate generateRandomExpiry() {       // this is optional just for testing , can be removed after 
         int randomDays = ThreadLocalRandom.current().nextInt(-365, 730); // -1 year to +2 years 
         return LocalDate.now().plusDays(randomDays);
     }
 
+    public String getId() {
+		return this.id;
+	}
+    
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getDose() {
-        return dose;
+        return this.dose;
     }
 
     public int getQuantityInStock() {
-        return quantityInStock;
+        return this.quantityInStock;
     }
 
     public LocalDate getExpiryDate() {
-        return expiryDate;
+        return this.expiryDate;
     }
 
+    
+    public void setId(String id) {
+		this.id = id;
+	}
+    
+    public void setName(String name) {
+		this.name = name;
+	}
+    
+    public void setDose(String dose) {
+		this.dose = dose;
+	}
+    
+    public void setQuantityInStock(int quantityInStock) {
+		this.quantityInStock = quantityInStock;
+	}
+    
+    public void setExpiryDate(LocalDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+    
+    public boolean isExpired() {
+		return LocalDate.now().isAfter(this.expiryDate);
+	}
+    
+    public boolean dispense(int amount) {
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount must be positive.");
+		}
+		if (this.quantityInStock < amount) {
+			return false; // Not enough stock to dispense
+		}
+		this.quantityInStock -= amount;
+		return true; // Dispensed successfully
+	}
+    
     public void restock(int amount) {
         this.quantityInStock += amount;
     }
 
     @Override
     public String toString() {
-        return "Medication ID: " + id +
-               ", Name: " + name +
-               ", Dose: " + dose +
-               ", Stock: " + quantityInStock +
-               ", Expiry: " + expiryDate;
+        return "Medication ID: " + this.id +
+               ", Name: " + this.name +
+               ", Dose: " + this.dose +
+               ", Stock: " + this.quantityInStock +
+               ", Expiry: " + this.expiryDate;
     }
 }
 
