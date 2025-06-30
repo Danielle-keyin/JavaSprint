@@ -4,6 +4,7 @@ import keyin.team6.model.Doctor; //Here is Artem u've got path keyin.team6.keyin
 import keyin.team6.model.Patient;
 import keyin.team6.model.Medication;
 import keyin.team6.model.Prescription;
+import keyin.team6.utils.Utilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -93,48 +94,111 @@ public class MedicationTrackingSystem {
 		System.out.println("3. AGE (current: " + patient.getAge() + ")");
 		System.out.println("4. PHONE NUMBER (current: " + patient.getPhoneNumber() + ")");
 		System.out.print("Choose field to edit (1-4) or 0 to exit: ");
-		String choice = scanner.nextLine();
 
-		switch (choice) {
-		case "0":
-		case "":
-		case "exit":
-		case "quit":
-		case "q":
-			System.out.println("Exiting edit mode.");
-			return;
-		case "1":
-			System.out.print("Enter new ID: ");
-			String newId = scanner.nextLine();
-			this.patientStore.changePatientId(patient.getId(), newId);
-			System.out.println("Patient ID updated to " + newId);
-			break;
-		case "2":
-			System.out.print("Enter new Name: ");
-			String newName = scanner.nextLine();
-			patient.setName(newName);
-			System.out.println("Patient name updated to " + newName);
-			break;
-		case "3":
-			System.out.print("Enter new Age: ");
-			int newAge = Integer.parseInt(scanner.nextLine());
-			patient.setAge(newAge);
-			System.out.println("Patient age updated to " + newAge);
-			break;
-		case "4":
-			System.out.print("Enter new Phone Number: ");
-			String newPhoneNumber = scanner.nextLine();
-			patient.setPhoneNumber(newPhoneNumber);
-			System.out.println("Patient phone number updated to " + newPhoneNumber);
-			break;
-		default:
-			System.out.println("Invalid choice. Please try again.");
+		while (true) {
+			String choice = scanner.nextLine();
+
+			if (Utilities.isQuitChoice(choice)) {
+				System.out.println("Exiting edit mode.");
+				return;
+			}
+
+			switch (choice) {
+			case "1":
+				System.out.print("Enter new ID: ");
+				String newId = scanner.nextLine();
+				this.patientStore.changePatientId(patient.getId(), newId);
+				System.out.println("Patient ID updated to " + newId);
+				return;
+			case "2":
+				System.out.print("Enter new Name: ");
+				String newName = scanner.nextLine();
+				patient.setName(newName);
+				System.out.println("Patient name updated to " + newName);
+				return;
+			case "3":
+				System.out.print("Enter new Age: ");
+				int newAge = Integer.parseInt(scanner.nextLine());
+				patient.setAge(newAge);
+				System.out.println("Patient age updated to " + newAge);
+				return;
+			case "4":
+				System.out.print("Enter new Phone Number: ");
+				String newPhoneNumber = scanner.nextLine();
+				patient.setPhoneNumber(newPhoneNumber);
+				System.out.println("Patient phone number updated to " + newPhoneNumber);
+				return;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
 		}
 	}
 
 	// Search for a patient. If you get the name even slightly wrong, oh well
 	public void searchPatient(Scanner scanner) {
-		System.out.println("Search Patient: Good luck spelling it right on the first try");
+		System.out.println("SEARCH PATIENT");
+		System.out.println("1. Search by ID");
+		System.out.println("2. Search by Name");
+		System.out.println("3. Search by Phone Number");
+		System.out.print("Choose search method (1-3): ");
+
+		while (true) {
+			String choice = scanner.nextLine();
+
+			if (Utilities.isQuitChoice(choice)) {
+				System.out.println("Exiting edit mode.");
+				return;
+			}
+
+			switch (choice) {
+			case "1":
+				System.out.print("Enter Patient ID: ");
+				String id = scanner.nextLine();
+				if (this.patientStore.hasPatient(id)) {
+					System.out.println(this.patientStore.getPatient(id));
+				} else {
+					System.out.println("Patient with ID " + id + " not found.");
+				}
+				return;
+			case "2": {
+				System.out.print("Enter Patient Name: ");
+				String name = scanner.nextLine();
+				var allPatients = this.patientStore.getAllPatients();
+
+				List<Patient> foundPatients = allPatients.values().stream()
+						.filter(p -> p.getName().equalsIgnoreCase(name)).toList();
+
+				if (foundPatients.isEmpty()) {
+					System.out.println("No patients found with name " + name);
+				} else {
+					for (Patient p : foundPatients) {
+						System.out.println(p);
+					}
+				}
+				return;
+			}
+			case "3": {
+				System.out.print("Enter Patient Phone Number: ");
+				String phoneNumber = scanner.nextLine();
+
+				var allPatients = this.patientStore.getAllPatients();
+				
+				List<Patient> foundPatients = allPatients.values().stream()
+						.filter(p -> p.getPhoneNumber().equalsIgnoreCase(phoneNumber)).toList();
+				
+				if (foundPatients.isEmpty()) {
+					System.out.println("No patients found with phone number " + phoneNumber);
+				} else {
+					for (Patient p : foundPatients) {
+						System.out.println(p);
+					}
+				}
+			}
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
+
 	}
 
 	// Adds a new doctor
