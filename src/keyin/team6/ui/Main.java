@@ -55,6 +55,7 @@ public class Main {
             }
             System.out.println();
             System.out.println("Press Enter to continue...");
+            scanner.nextLine(); // Wait for user to catch their breath
         }
 
         // Close the scanner. It deserves it.
