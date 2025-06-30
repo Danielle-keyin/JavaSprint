@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import keyin.team6.model.Doctor; //Here is Artem u've got path keyin.team6.keyin.team6 (twice) so I changed it
+import keyin.team6.model.Doctor;
 import keyin.team6.model.Medication;
 import keyin.team6.model.Patient;
 import keyin.team6.model.Prescription;
@@ -683,8 +682,7 @@ public class MedicationTrackingSystem {
 		}
 	}
 
-	// Manually input a prescription. Yes, everything. No shortcuts. Hope you like
-	// typing! xD
+	// Manually input a prescription. Yes, everything. No shortcuts. Hope you like typing! xD
 	public void acceptPrescription(Scanner scanner) {
 		Patient patient;
 	
@@ -750,14 +748,12 @@ public class MedicationTrackingSystem {
 		System.out.println("Prescription added successfully: " + newPrescription);
 	}
 
-	// Restocks every med with a random quantity. Totally how pharmacies work in
-	// real life.... yup totally
+	// Restocks every med with a random quantity. Totally how pharmacies work in real life.... yup totally
 	public void restockDrugs() {
 		
 	}
 
-	// Prints every doctor, patient, med, and prescription. yeah it's a wall of
-	// text...
+	// Prints every doctor, patient, med, and prescription. yeah it's a wall of text...
 	public void generateFullReport() {
 		System.out.println("\n--- SYSTEM REPORT ---");
 
@@ -780,10 +776,10 @@ public class MedicationTrackingSystem {
 		for (Prescription pr : this.prescriptions) {
 			System.out.println(pr);
 		}
+
 	}
 
-	// Loops through meds. Prints the expired ones. You’ll act shocked even though
-	// no one updates the inventory
+	// Loops through meds. Prints the expired ones. You’ll act shocked even though no one updates the inventory
 	public void checkExpiredMedications() {
 		System.out.println("\n--- EXPIRED MEDICATIONS ---");
 		boolean found = false;
@@ -815,7 +811,7 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter patient name: ");
 		String name = scanner.nextLine();
 
-		for (Patient p : patients) {
+		for (Patient p : patientStore.getAllPatients().values()) {
 			if (p.getName().equalsIgnoreCase(name)) {
 				System.out.println("\n--- Drug Summary for " + p.getName() + " ---");
 				for (Prescription pr : p.getPrescriptions()) {
@@ -825,6 +821,7 @@ public class MedicationTrackingSystem {
 				}
 			}
 		}
+
 	}
 
 }

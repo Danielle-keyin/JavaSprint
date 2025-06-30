@@ -1,4 +1,3 @@
-// comments bellow
 package keyin.team6.model;
 
 import java.time.LocalDate;
@@ -17,7 +16,6 @@ public class Medication {
         this.dose = dose;
         this.quantityInStock = quantityInStock;
         this.expiryDate = expiryDate;
-        this.expiryDate = generateRandomExpiry();
     }
 
     private static LocalDate generateRandomExpiry() {       // this is optional just for testing , can be removed after 
@@ -94,6 +92,3 @@ public class Medication {
                ", Expiry: " + this.expiryDate;
     }
 }
-
-// this is the most confusing part for me , can't connect the expiry date so basicaly created a randomizer to generate any 
-// expiry date for testing 
