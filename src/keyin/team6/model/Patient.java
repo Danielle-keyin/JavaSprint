@@ -13,15 +13,15 @@ public class Patient extends Person {
     }
 
     public List<Prescription> getPrescriptions() {
-        return prescriptions;
+        return new ArrayList<>(this.prescriptions);
     }
 
     public void addPrescription(Prescription prescription) {
-        prescriptions.add(prescription);
+        this.prescriptions.add(prescription);
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", Medications: " + prescriptions.size();
+        return super.toString() + ", Medications: " + this.prescriptions.size();
     }
 }

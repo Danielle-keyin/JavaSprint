@@ -13,11 +13,40 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getId() {
+		return this.id;
+	}
+    
     public String getName() {
-        return name;
+        return this.name;
     }
+    
+    public int getAge() {
+		return this.age;
+	}
+    
+    public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+    
+    public void setId(String id) {
+		this.id = id;
+	}
+    
+    public void setName(String name) {
+		this.name = name;
+	}
+    
+    public void setAge(int age) {
+    	this.age = age;
+    }
+    
+    public void setPhoneNumber(String phoneNumber) {
+    	this.phoneNumber = phoneNumber;
+    }
+    
 
     public String toString() {
-        return "ID: " + id + ", Name: " + name + ", Age: " + age + ", Phone: " + phoneNumber;
+        return "ID: " + this.id + ", Name: " + this.name + ", Age: " + this.age + ", Phone: " + this.phoneNumber;
     }
 }
