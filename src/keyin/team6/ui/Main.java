@@ -53,6 +53,8 @@ public class Main {
                 }
                 default -> System.out.println("Invalid choice. Of course.");
             }
+            System.out.println();
+            System.out.println("Press Enter to continue...");
         }
 
         // Close the scanner. It deserves it.
