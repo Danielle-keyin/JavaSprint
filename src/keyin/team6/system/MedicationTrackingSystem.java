@@ -18,13 +18,13 @@ import java.util.Scanner;
 public class MedicationTrackingSystem {
 
 	private PersonStore<Patient> patientStore;
-	private PersonStore<Doctor> doctorStore;
+	private DoctorStore doctorStore;
 	private Map<String, Medication> medications;
 	private List<Prescription> prescriptions;
 
 	public MedicationTrackingSystem() {
 		this.patientStore = new PersonStore<>();
-		this.doctorStore = new PersonStore<>();
+		this.doctorStore = new DoctorStore();
 		this.medications = new HashMap<>();
 		this.prescriptions = new ArrayList<>();
 	}
@@ -155,11 +155,12 @@ public class MedicationTrackingSystem {
 			case "1":
 				System.out.print("Enter Patient ID: ");
 				String id = scanner.nextLine();
-				if (this.patientStore.hasPerson(id)) {
-					System.out.println(this.patientStore.getPerson(id));
-				} else {
+				if (!this.patientStore.hasPerson(id)) {
 					System.out.println("Patient with ID " + id + " not found.");
+					return;
 				}
+
+				System.out.println(this.patientStore.getPerson(id));
 				return;
 			case "2": {
 				System.out.print("Enter Patient Name: ");
@@ -171,11 +172,13 @@ public class MedicationTrackingSystem {
 
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with name " + name);
-				} else {
-					for (Patient p : foundPatients) {
-						System.out.println(p);
-					}
+					return;
 				}
+
+				for (Patient p : foundPatients) {
+					System.out.println(p);
+				}
+
 				return;
 			}
 			case "3": {
@@ -189,10 +192,12 @@ public class MedicationTrackingSystem {
 
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with phone number " + phoneNumber);
-				} else {
-					for (Patient p : foundPatients) {
-						System.out.println(p);
-					}
+					return;
+
+				}
+
+				for (Patient p : foundPatients) {
+					System.out.println(p);
 				}
 				return;
 			}
@@ -203,8 +208,9 @@ public class MedicationTrackingSystem {
 
 	}
 
-	//TODO (for a real company) Refactor the Doctor and Patient methods to avoid code duplication. i could not think of a good way to do it at the time.
-	
+	// TODO (for a real company) Refactor the Doctor and Patient methods to avoid
+	// code duplication. i could not think of a good way to do it at the time.
+
 	// Adds a new doctor
 	public void addDoctor(Scanner scanner) {
 		System.out.print("Enter Doctor Name: ");
@@ -230,7 +236,7 @@ public class MedicationTrackingSystem {
 
 		int newId = this.doctorStore.getPersonCount() + 1; // Simple ID generation
 
-		Doctor newDoctor = new Doctor(String.valueOf(newId), name, -1, phoneNumber, specialty);
+		Doctor newDoctor = new Doctor(String.valueOf(newId), name, age, phoneNumber, specialty);
 
 		this.doctorStore.addPerson(newDoctor);
 		System.out.println("Doctor added successfully: " + newDoctor);
@@ -320,25 +326,25 @@ public class MedicationTrackingSystem {
 			case "2":
 				System.out.print("Enter new Name: ");
 				String newName = scanner.nextLine();
-				doctor.setName(newName);
+				this.doctorStore.changePersonName(doctor.getId(), newName);
 				System.out.println("Doctor name updated to " + newName);
 				return;
 			case "3":
 				System.out.print("Enter new Age: ");
 				int newAge = Integer.parseInt(scanner.nextLine());
-				doctor.setAge(newAge);
+				this.doctorStore.changePersonAge(doctor.getId(), newAge);
 				System.out.println("Doctor age updated to " + newAge);
 				return;
 			case "4":
 				System.out.print("Enter new Phone Number: ");
 				String newPhoneNumber = scanner.nextLine();
-				doctor.setPhoneNumber(newPhoneNumber);
+				this.doctorStore.changePersonPhoneNumber(doctor.getId(), newPhoneNumber);
 				System.out.println("Doctor phone number updated to " + newPhoneNumber);
 				return;
 			case "5":
 				System.out.print("Enter new Specialization: ");
 				String newSpecialization = scanner.nextLine();
-				doctor.setSpecialization(newSpecialization);
+				this.doctorStore.changeDoctorSpecialization(doctor.getId(), newSpecialization);
 				System.out.println("Doctor specialization updated to " + newSpecialization);
 				return;
 			default:
@@ -348,7 +354,74 @@ public class MedicationTrackingSystem {
 	}
 
 	public void searchDoctor(Scanner scanner) {
-		System.out.println("Search Doctor: Not implemented yet.");
+		System.out.println("SEARCH DOCTOR");
+		System.out.println("1. Search by ID");
+		System.out.println("2. Search by Name");
+		System.out.println("3. Search by Phone Number");
+		System.out.println("4. Search by Specialty");
+		System.out.print("Choose search method (1-3): ");
+
+		while (true) {
+			String choice = scanner.nextLine();
+
+			if (Utilities.isQuitChoice(choice)) {
+				System.out.println("Exiting search mode.");
+				return;
+			}
+
+			switch (choice) {
+			case "1":
+				System.out.print("Enter Doctor ID: ");
+				String id = scanner.nextLine();
+				if (this.doctorStore.hasPerson(id)) {
+					System.out.println("Doctor with ID " + id + " not found.");
+				}
+
+				System.out.println(this.doctorStore.getPerson(id));
+				return;
+			case "2": {
+				System.out.print("Enter Doctor Name: ");
+				String name = scanner.nextLine();
+				var allDoctors = this.doctorStore.getAllPersons();
+
+				List<Doctor> foundDoctors = allDoctors.values().stream().filter(d -> d.getName().equalsIgnoreCase(name))
+						.toList();
+
+				if (foundDoctors.isEmpty()) {
+					System.out.println("No doctors found with name " + name);
+					return;
+				}
+
+				for (Doctor d : foundDoctors) {
+					System.out.println(d);
+				}
+
+				return;
+			}
+			case "3": {
+				System.out.print("Enter Doctor Phone Number: ");
+				String phoneNumber = scanner.nextLine();
+
+				var allDoctors = this.doctorStore.getAllPersons();
+
+				List<Doctor> foundDoctors = allDoctors.values().stream()
+						.filter(d -> d.getPhoneNumber().equalsIgnoreCase(phoneNumber)).toList();
+
+				if (foundDoctors.isEmpty()) {
+					System.out.println("No doctors found with phone number " + phoneNumber);
+					return;
+				}
+
+				for (Doctor d : foundDoctors) {
+					System.out.println(d);
+				}
+
+				return;
+			}
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
 	}
 
 	// Manually input a prescription. Yes, everything. No shortcuts. Hope you like
