@@ -15,17 +15,22 @@ public class Doctor extends Person {
         this.patients = new ArrayList<>();
     }
 
-    public void addPatient(Patient patient) {
-        patients.add(patient);
-    }
 
-    public String getSpecialization() {
-        return specialization;
+    public void addPatient(Patient patient) {
+        this.patients.add(patient);
     }
 
     public List<Patient> getPatients() {
-        return patients;
+        return this.patients;
     }
+    
+    public String getSpecialization() {
+        return this.specialization;
+    }
+    
+    public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
 
     @Override
     public String toString() {

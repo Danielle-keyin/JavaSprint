@@ -166,13 +166,13 @@ public class MedicationTrackingSystem {
 				String name = scanner.nextLine();
 				var allPatients = this.patientStore.getAllPersons();
 
-				List<Person> foundPatients = allPatients.values().stream()
+				List<Patient> foundPatients = allPatients.values().stream()
 						.filter(p -> p.getName().equalsIgnoreCase(name)).toList();
 
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with name " + name);
 				} else {
-					for (Person p : foundPatients) {
+					for (Patient p : foundPatients) {
 						System.out.println(p);
 					}
 				}
@@ -183,14 +183,14 @@ public class MedicationTrackingSystem {
 				String phoneNumber = scanner.nextLine();
 
 				var allPatients = this.patientStore.getAllPersons();
-				
-				List<Person> foundPatients = allPatients.values().stream()
+
+				List<Patient> foundPatients = allPatients.values().stream()
 						.filter(p -> p.getPhoneNumber().equalsIgnoreCase(phoneNumber)).toList();
-				
+
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with phone number " + phoneNumber);
 				} else {
-					for (Person p : foundPatients) {
+					for (Patient p : foundPatients) {
 						System.out.println(p);
 					}
 				}
@@ -203,32 +203,152 @@ public class MedicationTrackingSystem {
 
 	}
 
+	//TODO (for a real company) Refactor the Doctor and Patient methods to avoid code duplication. i could not think of a good way to do it at the time.
+	
 	// Adds a new doctor
 	public void addDoctor(Scanner scanner) {
 		System.out.print("Enter Doctor Name: ");
 		String name = scanner.nextLine();
 
-		System.out.print("Enter Doctor Specialty: ");
-		String specialty = scanner.nextLine();
+		System.out.print("Enter Doctor Age: ");
+		int age = -1;
+		while (true) {
+			try {
+				age = Integer.parseInt(scanner.nextLine());
+				break;
+			} catch (NumberFormatException e) {
+				System.out.print("Invalid input. Please enter a valid age: ");
+				continue; // Prompt again
+			}
+		}
 
 		System.out.print("Enter Doctor Phone Number: ");
 		String phoneNumber = scanner.nextLine();
 
-		int newId = this.doctorStore.getPersonCount() + 1; // Simple ID generation
-		Doctor newDoctor = new Doctor(String.valueOf(newId), name, specialty, phoneNumber);
+		System.out.print("Enter Doctor Specialty: ");
+		String specialty = scanner.nextLine();
 
-		this.doctorStore.addDoctor(newDoctor);
+		int newId = this.doctorStore.getPersonCount() + 1; // Simple ID generation
+
+		Doctor newDoctor = new Doctor(String.valueOf(newId), name, -1, phoneNumber, specialty);
+
+		this.doctorStore.addPerson(newDoctor);
 		System.out.println("Doctor added successfully: " + newDoctor);
 	}
 
 	// Removes a doctor
 	public void deleteDoctor(Scanner scanner) {
-		System.out.println("Delete Doctor: Doctor has left the chat (and the practice or the province)");
+		System.out.print("Enter Doctor ID to delete: ");
+		String id = scanner.nextLine();
+
+		if (!this.doctorStore.hasPerson(id)) {
+			System.out.println("Doctor with ID " + id + " not found.");
+			return;
+		}
+
+		var doctor = this.doctorStore.getPerson(id);
+		System.out.print("Delete '" + doctor.getName() + "'? (yes/no): ");
+		String confirmation = scanner.nextLine();
+		if (confirmation.equalsIgnoreCase("yes")) {
+			this.doctorStore.deletePerson(id);
+			System.out.println("Doctor with ID " + id + " has been deleted.");
+		} else {
+			System.out.println("Deletion cancelled.");
+		}
 	}
 
 	// Assigns a patient to a doctor
 	public void assignPatientToDoctor(Scanner scanner) {
-		System.out.println("Assign Patient to Doctor");
+		System.out.print("Enter Patient ID: ");
+		String patientId = scanner.nextLine();
+
+		if (!this.patientStore.hasPerson(patientId)) {
+			System.out.println("Patient with ID " + patientId + " not found.");
+			return;
+		}
+
+		System.out.print("Enter Doctor ID: ");
+		String doctorId = scanner.nextLine();
+
+		if (!this.doctorStore.hasPerson(doctorId)) {
+			System.out.println("Doctor with ID " + doctorId + " not found.");
+			return;
+		}
+
+		var patient = this.patientStore.getPerson(patientId);
+		var doctor = this.doctorStore.getPerson(doctorId);
+
+		doctor.addPatient(patient);
+		// patient.setDoctor(doctor); // should patient have a reference to doctor?
+
+		System.out.println("Patient '" + patient.getName() + "' assigned to Doctor '" + doctor.getName() + "'.");
+	}
+
+	public void editDoctor(Scanner scanner) {
+		System.out.print("Enter Doctor ID to edit: ");
+		String id = scanner.nextLine();
+
+		if (!this.doctorStore.hasPerson(id)) {
+			System.out.println("Doctor with ID " + id + " not found.");
+			return;
+		}
+
+		var doctor = this.doctorStore.getPerson(id);
+		System.out.println("Editing Doctor: " + doctor.getName());
+		System.out.println("1. ID (current: " + doctor.getId() + ")");
+		System.out.println("2. NAME (current: " + doctor.getName() + ")");
+		System.out.println("3. AGE (current: " + doctor.getAge() + ")");
+		System.out.println("4. PHONE NUMBER (current: " + doctor.getPhoneNumber() + ")");
+		System.out.println("5. SPECIALIZATION (current: " + doctor.getSpecialization() + ")");
+		System.out.print("Choose field to edit (1-5) or 0 to exit: ");
+
+		while (true) {
+			String choice = scanner.nextLine();
+
+			if (Utilities.isQuitChoice(choice)) {
+				System.out.println("Exiting edit mode.");
+				return;
+			}
+
+			switch (choice) {
+			case "1":
+				System.out.print("Enter new ID: ");
+				String newId = scanner.nextLine();
+				this.doctorStore.changePersonId(doctor.getId(), newId);
+				System.out.println("Doctor ID updated to " + newId);
+				return;
+			case "2":
+				System.out.print("Enter new Name: ");
+				String newName = scanner.nextLine();
+				doctor.setName(newName);
+				System.out.println("Doctor name updated to " + newName);
+				return;
+			case "3":
+				System.out.print("Enter new Age: ");
+				int newAge = Integer.parseInt(scanner.nextLine());
+				doctor.setAge(newAge);
+				System.out.println("Doctor age updated to " + newAge);
+				return;
+			case "4":
+				System.out.print("Enter new Phone Number: ");
+				String newPhoneNumber = scanner.nextLine();
+				doctor.setPhoneNumber(newPhoneNumber);
+				System.out.println("Doctor phone number updated to " + newPhoneNumber);
+				return;
+			case "5":
+				System.out.print("Enter new Specialization: ");
+				String newSpecialization = scanner.nextLine();
+				doctor.setSpecialization(newSpecialization);
+				System.out.println("Doctor specialization updated to " + newSpecialization);
+				return;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+		}
+	}
+
+	public void searchDoctor(Scanner scanner) {
+		System.out.println("Search Doctor: Not implemented yet.");
 	}
 
 	// Manually input a prescription. Yes, everything. No shortcuts. Hope you like
@@ -249,22 +369,22 @@ public class MedicationTrackingSystem {
 		System.out.println("\n--- SYSTEM REPORT ---");
 
 		System.out.println("Doctors:");
-		for (Doctor doc : doctors) {
+		for (Doctor doc : this.doctorStore.getAllPersons().values()) {
 			System.out.println(doc);
 		}
 
 		System.out.println("\nPatients:");
-		for (Patient p : patients) {
+		for (Patient p : this.patientStore.getAllPersons().values()) {
 			System.out.println(p);
 		}
 
 		System.out.println("\nMedications:");
-		for (Medication m : medications) {
+		for (Medication m : this.medications.values()) {
 			System.out.println(m);
 		}
 
 		System.out.println("\nPrescriptions:");
-		for (Prescription pr : prescriptions) {
+		for (Prescription pr : this.prescriptions) {
 			System.out.println(pr);
 		}
 	}
@@ -274,7 +394,7 @@ public class MedicationTrackingSystem {
 	public void checkExpiredMedications() {
 		System.out.println("\n--- EXPIRED MEDICATIONS ---");
 		boolean found = false;
-		for (Medication m : medications) {
+		for (Medication m : this.medications.values()) {
 			if (m.getExpiryDate().isBefore(LocalDate.now())) {
 				System.out.println(m);
 				found = true;
@@ -290,7 +410,7 @@ public class MedicationTrackingSystem {
 		String name = scanner.nextLine();
 
 		System.out.println("\n--- Prescriptions by Dr. " + name + " ---");
-		for (Prescription p : prescriptions) {
+		for (Prescription p : this.prescriptions) {
 			if (p.getDoctor().getName().equalsIgnoreCase(name)) {
 				System.out.println(p);
 			}
@@ -312,14 +432,6 @@ public class MedicationTrackingSystem {
 				}
 			}
 		}
-	}
-
-	public void editDoctor(Scanner scanner) {
-		System.out.println("Edit Doctor: Not implemented yet.");
-	}
-
-	public void searchDoctor(Scanner scanner) {
-		System.out.println("Search Doctor: Not implemented yet.");
 	}
 
 	public void addMedication(Scanner scanner) {
