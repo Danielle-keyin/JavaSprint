@@ -2,14 +2,16 @@
 package keyin.team6.ui;
 
 // We import the system. Because everything depends on this one class. Of course it does.
-import keyin.team6.system.MedicationTrackingSystem;
-
 import java.util.Scanner;
+import keyin.team6.system.MedicationTrackingSystem;
+import keyin.team6.utils.SampleDataGenerator;
 
 public class Main {
     public static void main(String[] args) {
         // Create the system. It's empty. You have to manually fill it. Yay.
         MedicationTrackingSystem system = new MedicationTrackingSystem();
+        SampleDataGenerator.populateSampleData(system);
+
 
         // Scanner to read user input. Get ready to type. A lot.
         Scanner scanner = new Scanner(System.in);
