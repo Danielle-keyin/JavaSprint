@@ -26,6 +26,23 @@ public class MedicationTrackingSystem {
         this.medications = new ArrayList<>();
         this.prescriptions = new ArrayList<>();
     }
+    
+    public List<Doctor> getDoctors() {
+    return doctors;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public List<Medication> getMedications() {
+        return medications;
+    }
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
 
     // Adds a new patient. Yes, manually. No, there's no form. Welcome to 2003 bahahaha
     public void addPatient(Scanner scanner) {
