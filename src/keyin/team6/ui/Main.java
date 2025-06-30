@@ -7,6 +7,7 @@ import java.util.Scanner;
 import keyin.team6.reports.ReportGenerator;
 import keyin.team6.system.MedicationTrackingSystem;
 import keyin.team6.utils.SampleDataGenerator;
+import keyin.team6.utils.Utilities;
 
 public class Main {
 	public static void main(String[] args) {
@@ -26,6 +27,13 @@ public class Main {
 				printMenu(); // Show all the options. Again.
 				System.out.print("Enter your choice: ");
 				String choice = scanner.nextLine();
+				
+				if(Utilities.isQuitChoice(choice)) {
+					// Finally, sweet escape.
+					System.out.println("Exiting the system. Goodbye!");
+					running = false;
+					break;
+				}
 
 				// Handle the choice
 				switch (choice) {
@@ -48,11 +56,6 @@ public class Main {
 				case "17" -> reports.printPrescriptionsByDoctor(scanner); // The doctor writes *how* many?
 				case "18" -> reports.printPatientDrugSummary(scanner); // Here's what the patient hoarded all year
 				case "19" -> system.restockDrugs(); // Random refill. Totally realistic..
-				case "0" -> {
-					// Finally, sweet escape.
-					System.out.println("Exiting the system. Goodbye!");
-					running = false;
-				}
 				default -> System.out.println("Invalid choice. Of course.");
 				}
 				System.out.println();
