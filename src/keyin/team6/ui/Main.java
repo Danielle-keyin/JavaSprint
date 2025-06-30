@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 		// Create the system. It's empty. You have to manually fill it. Yay.
 		MedicationTrackingSystem system = new MedicationTrackingSystem();
-		ReportGenerator reportGenerator = new ReportGenerator(system);
+		ReportGenerator reports = new ReportGenerator(system);
 		SampleDataGenerator.populateSampleData(system);
 
 		// Scanner to read user input. Get ready to type. A lot.
@@ -43,10 +43,10 @@ public class Main {
 				case "12" -> system.searchMedication(scanner); // “Tylenol” or “Tylonel”? Good luck
 				case "13" -> system.assignPatientToDoctor(scanner); // Force a relationship. Why not
 				case "14" -> system.acceptPrescription(scanner); // Enter everything manually. Fun
-				case "15" -> system.generateFullReport(); // Dump all the data. Wall of text incoming
-				case "16" -> system.checkExpiredMedications(); // Wow, stuff expired. Surprise
-				case "17" -> system.printPrescriptionsByDoctor(scanner); // The doctor writes *how* many?
-				case "18" -> system.printPatientDrugSummary(scanner); // Here's what the patient hoarded all year
+				case "15" -> reports.generateFullReport(); // Dump all the data. Wall of text incoming
+				case "16" -> reports.checkExpiredMedications(); // Wow, stuff expired. Surprise
+				case "17" -> reports.printPrescriptionsByDoctor(scanner); // The doctor writes *how* many?
+				case "18" -> reports.printPatientDrugSummary(scanner); // Here's what the patient hoarded all year
 				case "19" -> system.restockDrugs(); // Random refill. Totally realistic..
 				case "0" -> {
 					// Finally, sweet escape.
