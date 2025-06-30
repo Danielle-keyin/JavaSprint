@@ -31,7 +31,7 @@ public class PersonStore<T extends Person> {
 		return this.persons.containsKey(id);
 	}
 	
-	public Person getPerson(String id) {
+	public T getPerson(String id) {
 		if (!this.persons.containsKey(id)) {
 			throw new IllegalArgumentException("Person with ID " + id + " does not exist.");
 		} 
@@ -39,7 +39,7 @@ public class PersonStore<T extends Person> {
 		return this.persons.get(id);
 	}
 	
-	public HashMap<String, Person> getAllPersons() {
+	public HashMap<String, T> getAllPersons() {
 		return new HashMap<>(this.persons);
 	}
 	
