@@ -195,7 +195,7 @@ public class MedicationTrackingSystem {
 				var allPatients = this.patientStore.getAllPersons();
 
 				List<Patient> foundPatients = allPatients.values().stream()
-						.filter(p -> p.getName().equalsIgnoreCase(name)).toList();
+						.filter(p -> p.getName().toLowerCase().contains(name)).toList();
 
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with name " + name);
@@ -411,7 +411,7 @@ public class MedicationTrackingSystem {
 				String name = scanner.nextLine();
 				var allDoctors = this.doctorStore.getAllPersons();
 
-				List<Doctor> foundDoctors = allDoctors.values().stream().filter(d -> d.getName().equalsIgnoreCase(name))
+				List<Doctor> foundDoctors = allDoctors.values().stream().filter(d -> d.getName().toLowerCase().contains(name))
 						.toList();
 
 				if (foundDoctors.isEmpty()) {
@@ -660,7 +660,7 @@ public class MedicationTrackingSystem {
 
 				List<Medication> foundMeds = new ArrayList<>();
 				for (Medication m : this.medications.values()) {
-					if (m.getName().equalsIgnoreCase(name)) {
+					if (m.getName().toLowerCase().contains(name.toLowerCase())) {
 						foundMeds.add(m);
 					}
 				}
@@ -811,7 +811,7 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter patient name: ");
 		String name = scanner.nextLine();
 
-		for (Patient p : patientStore.getAllPatients().values()) {
+		for (Patient p : patientStore.getAllPersons().values()) {
 			if (p.getName().equalsIgnoreCase(name)) {
 				System.out.println("\n--- Drug Summary for " + p.getName() + " ---");
 				for (Prescription pr : p.getPrescriptions()) {
@@ -822,6 +822,22 @@ public class MedicationTrackingSystem {
 			}
 		}
 
+	}
+	
+	public void insertDoctor(Doctor doctor) {
+		this.doctorStore.addPerson(doctor);
+	}
+	
+	public void insertPatient(Patient patient) {
+		this.patientStore.addPerson(patient);
+	}
+	
+	public void insertMedication(Medication medication) {
+		this.medications.put(medication.getId(), medication);
+	}
+	
+	public void insertPrescription(Prescription prescription) {
+		this.prescriptions.add(prescription);
 	}
 
 }
