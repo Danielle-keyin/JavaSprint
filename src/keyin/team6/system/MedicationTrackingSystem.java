@@ -2,6 +2,7 @@ package keyin.team6.system;
 
 import keyin.team6.model.Doctor; //Here is Artem u've got path keyin.team6.keyin.team6 (twice) so I changed it
 import keyin.team6.model.Patient;
+import keyin.team6.model.Person;
 import keyin.team6.model.Medication;
 import keyin.team6.model.Prescription;
 import keyin.team6.utils.Utilities;
@@ -16,14 +17,14 @@ import java.util.Scanner;
 
 public class MedicationTrackingSystem {
 
-	private PatientStore patientStore;
-	private Map<String, Doctor> doctors;
+	private PersonStore<Patient> patientStore;
+	private PersonStore<Doctor> doctorStore;
 	private Map<String, Medication> medications;
 	private List<Prescription> prescriptions;
 
 	public MedicationTrackingSystem() {
-		this.patientStore = new PatientStore();
-		this.doctors = new HashMap<>();
+		this.patientStore = new PersonStore<>();
+		this.doctorStore = new PersonStore<>();
 		this.medications = new HashMap<>();
 		this.prescriptions = new ArrayList<>();
 	}
@@ -50,10 +51,10 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter Patient Phone Number: ");
 		String phoneNumber = scanner.nextLine();
 
-		int newId = this.patientStore.getPatientCount() + 1; // Simple ID generation
+		int newId = this.patientStore.getPersonCount() + 1; // Simple ID generation
 		Patient newPatient = new Patient(String.valueOf(newId), name, age, phoneNumber);
 
-		this.patientStore.addPatient(newPatient);
+		this.patientStore.addPerson(newPatient);
 	}
 
 	// Deletes a patient from the system
@@ -61,16 +62,16 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter Patient ID to delete: ");
 		String id = scanner.nextLine();
 
-		if (!this.patientStore.hasPatient(id)) {
+		if (!this.patientStore.hasPerson(id)) {
 			System.out.println("Patient with ID " + id + " not found.");
 			return;
 		}
 
-		var patient = this.patientStore.getPatient(id);
+		var patient = this.patientStore.getPerson(id);
 		System.out.print("Delete '" + patient.getName() + "'? (yes/no): ");
 		String confirmation = scanner.nextLine();
 		if (confirmation.equalsIgnoreCase("yes")) {
-			this.patientStore.deletePatient(id);
+			this.patientStore.deletePerson(id);
 			System.out.println("Patient with ID " + id + " has been deleted.");
 		} else {
 			System.out.println("Deletion cancelled.");
@@ -82,12 +83,12 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter Patient ID to edit: ");
 		String id = scanner.nextLine();
 
-		if (!this.patientStore.hasPatient(id)) {
+		if (!this.patientStore.hasPerson(id)) {
 			System.out.println("Patient with ID " + id + " not found.");
 			return;
 		}
 
-		var patient = this.patientStore.getPatient(id);
+		var patient = this.patientStore.getPerson(id);
 		System.out.println("Editing Patient: " + patient.getName());
 		System.out.println("1. ID (current: " + patient.getId() + ")");
 		System.out.println("2. NAME (current: " + patient.getName() + ")");
@@ -107,7 +108,7 @@ public class MedicationTrackingSystem {
 			case "1":
 				System.out.print("Enter new ID: ");
 				String newId = scanner.nextLine();
-				this.patientStore.changePatientId(patient.getId(), newId);
+				this.patientStore.changePersonId(patient.getId(), newId);
 				System.out.println("Patient ID updated to " + newId);
 				return;
 			case "2":
@@ -154,8 +155,8 @@ public class MedicationTrackingSystem {
 			case "1":
 				System.out.print("Enter Patient ID: ");
 				String id = scanner.nextLine();
-				if (this.patientStore.hasPatient(id)) {
-					System.out.println(this.patientStore.getPatient(id));
+				if (this.patientStore.hasPerson(id)) {
+					System.out.println(this.patientStore.getPerson(id));
 				} else {
 					System.out.println("Patient with ID " + id + " not found.");
 				}
@@ -163,15 +164,15 @@ public class MedicationTrackingSystem {
 			case "2": {
 				System.out.print("Enter Patient Name: ");
 				String name = scanner.nextLine();
-				var allPatients = this.patientStore.getAllPatients();
+				var allPatients = this.patientStore.getAllPersons();
 
-				List<Patient> foundPatients = allPatients.values().stream()
+				List<Person> foundPatients = allPatients.values().stream()
 						.filter(p -> p.getName().equalsIgnoreCase(name)).toList();
 
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with name " + name);
 				} else {
-					for (Patient p : foundPatients) {
+					for (Person p : foundPatients) {
 						System.out.println(p);
 					}
 				}
@@ -181,18 +182,19 @@ public class MedicationTrackingSystem {
 				System.out.print("Enter Patient Phone Number: ");
 				String phoneNumber = scanner.nextLine();
 
-				var allPatients = this.patientStore.getAllPatients();
+				var allPatients = this.patientStore.getAllPersons();
 				
-				List<Patient> foundPatients = allPatients.values().stream()
+				List<Person> foundPatients = allPatients.values().stream()
 						.filter(p -> p.getPhoneNumber().equalsIgnoreCase(phoneNumber)).toList();
 				
 				if (foundPatients.isEmpty()) {
 					System.out.println("No patients found with phone number " + phoneNumber);
 				} else {
-					for (Patient p : foundPatients) {
+					for (Person p : foundPatients) {
 						System.out.println(p);
 					}
 				}
+				return;
 			}
 			default:
 				System.out.println("Invalid choice. Please try again.");
@@ -203,7 +205,20 @@ public class MedicationTrackingSystem {
 
 	// Adds a new doctor
 	public void addDoctor(Scanner scanner) {
-		System.out.println("Add Doctor: Added a new doc");
+		System.out.print("Enter Doctor Name: ");
+		String name = scanner.nextLine();
+
+		System.out.print("Enter Doctor Specialty: ");
+		String specialty = scanner.nextLine();
+
+		System.out.print("Enter Doctor Phone Number: ");
+		String phoneNumber = scanner.nextLine();
+
+		int newId = this.doctorStore.getPersonCount() + 1; // Simple ID generation
+		Doctor newDoctor = new Doctor(String.valueOf(newId), name, specialty, phoneNumber);
+
+		this.doctorStore.addDoctor(newDoctor);
+		System.out.println("Doctor added successfully: " + newDoctor);
 	}
 
 	// Removes a doctor
