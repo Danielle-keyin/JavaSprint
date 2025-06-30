@@ -1,40 +1,77 @@
 package keyin.team6.system;
 
-import keyin.team6.keyin.team6.model.Doctor;  //Here is Artem u've got path keyin.team6.keyin.team6 (twice) so I changed it
+import keyin.team6.model.Doctor;  //Here is Artem u've got path keyin.team6.keyin.team6 (twice) so I changed it
 import keyin.team6.model.Patient;
 import keyin.team6.model.Medication;
 import keyin.team6.model.Prescription;
-import keyin.team6.model.Doctor;           //Artem* actually I just added it here because when I removing the first import 
-                                        // java.util.Random import not exists 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
 public class MedicationTrackingSystem {
 
-    private List<Doctor> doctors;
-    private List<Patient> patients;
-    private List<Medication> medications;
+    private Map<String, Doctor> doctors;
+    private Map<String, Patient> patients;
+    private Map<String, Medication> medications;
     private List<Prescription> prescriptions;
 
     public MedicationTrackingSystem() {
-        this.doctors = new ArrayList<>();
-        this.patients = new ArrayList<>();
-        this.medications = new ArrayList<>();
+        this.doctors = new HashMap<>();
+        this.patients = new HashMap<>();
+        this.medications = new HashMap<>();
         this.prescriptions = new ArrayList<>();
     }
 
     // Adds a new patient. Yes, manually. No, there's no form. Welcome to 2003 bahahaha
     public void addPatient(Scanner scanner) {
-        System.out.println("Add Patient: Not implemented yet");
+    	
+    	System.out.print("Enter Patient Name: ");
+   		String name = scanner.nextLine();
+   		
+		System.out.print("Enter Patient Age: ");
+		int age = -1;
+		while(true) {
+			try {
+				age = Integer.parseInt(scanner.nextLine());
+				break;
+			} catch (NumberFormatException e) {
+				System.out.print("Invalid input. Please enter a valid age: ");
+				continue; // Prompt again
+			}
+		}
+		
+		System.out.print("Enter Patient Phone Number: ");
+		String phoneNumber = scanner.nextLine();
+		
+		int newId = this.patients.size() + 1; // Simple ID generation
+		Patient newPatient = new Patient(String.valueOf(newId), name, age, phoneNumber);
+		
+		this.patients.put(String.valueOf(newId), newPatient);
     }
 
     // Deletes a patient from the system
     public void deletePatient(Scanner scanner) {
-        System.out.println("Delete Patient: Patient mysteriously vanished. Probably moved pharmacies");
+        System.out.print("Enter Patient ID to delete: ");
+		String id = scanner.nextLine();
+		
+		if (this.patients.containsKey(id)) {
+			var patient = this.patients.get(id);
+			System.out.print("Delete '" + patient.getName() + "'? (yes/no): ");
+			String confirmation = scanner.nextLine();
+			if(confirmation.equalsIgnoreCase("yes")) {
+				this.patients.remove(id);
+				System.out.println("Patient with ID " + id + " has been deleted.");
+			} else {
+				System.out.println("Deletion cancelled.");
+			}
+		} else {
+			System.out.println("Patient with ID " + id + " not found.");
+		}
     }
 
     // Because someone *definitely* entered "Jhn Smth" by accident. Time to fix it
