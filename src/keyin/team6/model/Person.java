@@ -45,8 +45,8 @@ public class Person {
     	this.phoneNumber = phoneNumber;
     }
     
-
-    public String toString() {
+    @Override
+	public String toString() {
         return "ID: " + this.id + ", Name: " + this.name + ", Age: " + this.age + ", Phone: " + this.phoneNumber;
     }
 }

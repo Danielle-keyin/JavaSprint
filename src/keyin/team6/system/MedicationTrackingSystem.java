@@ -817,7 +817,7 @@ public class MedicationTrackingSystem {
 		System.out.print("Enter patient name: ");
 		String name = scanner.nextLine();
 
-		for (Patient p : patientStore.getAllPersons().values()) {
+		for (Patient p : this.patientStore.getAllPersons().values()) {
 			if (p.getName().equalsIgnoreCase(name)) {
 				System.out.println("\n--- Drug Summary for " + p.getName() + " ---");
 				for (Prescription pr : p.getPrescriptions()) {

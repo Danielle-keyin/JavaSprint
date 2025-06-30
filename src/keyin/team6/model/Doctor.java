@@ -34,6 +34,6 @@ public class Doctor extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + ", Specialization: " + specialization + ", Patients: " + patients.size();
+        return super.toString() + ", Specialization: " + this.specialization + ", Patients: " + this.patients.size();
     }
 }
