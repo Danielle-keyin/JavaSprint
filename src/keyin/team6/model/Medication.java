@@ -1,8 +1,6 @@
-// comments bellow
 package keyin.team6.model;
 
 import java.time.LocalDate;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Medication {
     private String id;
@@ -17,12 +15,10 @@ public class Medication {
         this.dose = dose;
         this.quantityInStock = quantityInStock;
         this.expiryDate = expiryDate;
-        this.expiryDate = generateRandomExpiry();
     }
 
-    private LocalDate generateRandomExpiry() {       // this is optional just for testing , can be removed after 
-        int randomDays = ThreadLocalRandom.current().nextInt(-365, 730); // -1 year to +2 years 
-        return LocalDate.now().plusDays(randomDays);
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -54,6 +50,3 @@ public class Medication {
                ", Expiry: " + expiryDate;
     }
 }
-
-// this is the most confusing part for me , can't connect the expiry date so basicaly created a randomizer to generate any 
-// expiry date for testing 
